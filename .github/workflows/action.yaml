@@ -11,7 +11,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
+    - name: Copy Docker file
+      run: |
+        cp Dockerfile .github/workflows
     - name: Build Docker image
       run: |
         docker build -t my-image .
