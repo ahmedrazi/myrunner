@@ -1,23 +1,23 @@
-name: CI/CD pipeline test
+# Base image to build
+FROM python:3.8
 
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# Work directory specific to web IDE
+# You can change if you are running on your
+# Local Machine
+WORKDIR /home/cloud_user
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Copy Docker file
-      run: |
-        cp Dockerfile .github/workflows
-    - name: Build Docker image
-      run: |
-        docker build -t my-image .
+# COPY requirements.txt to container before
+# Running the code
+# This way any change in requirements will affect only 
+# one layer.
+COPY requirements.txt requirements.txt
 
-    - name: Run unit tests
-      run: |
-        docker run my-image npm run test
+# Install required libraries
+RUN pip install -r requirements.txt
+
+# Add code file to container directory.
+ADD . .
+
+# Running the code file
+# You can also use ENTRYPOINT here.
+CMD [ "python", "date_time.py" ]
