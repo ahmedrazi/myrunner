@@ -1,11 +1,21 @@
-name: Must run on custom runner
+name: CI/CD
 
-on: push
-
+on:
+  push:
+    branches:
+      - main
 jobs:
-  init:
-    runs-on: self-hosted
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - run: echo 'hello cloud gurus'
-      - run: echo $HOSTNAME
-      - run: cat '/etc/hostname'
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-image .
+
+    - name: Run unit tests
+      run: |
+        docker run my-image npm run test
