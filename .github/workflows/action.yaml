@@ -1,5 +1,5 @@
 # Base image to build
-FROM python:3.8
+FROM python:3.10.6
 
 # Work directory specific to web IDE
 # You can change if you are running on your
